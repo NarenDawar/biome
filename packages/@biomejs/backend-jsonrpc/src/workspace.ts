@@ -3098,6 +3098,11 @@ export interface Nursery {
 	 */
 	noExcessiveStatementsPerFunction?: NoExcessiveStatementsPerFunctionConfiguration;
 	/**
+	 * Disallow toHaveBeenCalledOnce() in favor of toHaveBeenCalledTimes(1).
+	 * See https://biomejs.dev/linter/rules/no-expect-to-have-been-called-once
+	 */
+	noExpectToHaveBeenCalledOnce?: NoExpectToHaveBeenCalledOnceConfiguration;
+	/**
 	 * Disallow extending the prototype of built-in objects.
 	 * See https://biomejs.dev/linter/rules/no-extend-native
 	 */
@@ -6833,6 +6838,9 @@ export type NoExcessiveSelectorComplexityConfiguration =
 export type NoExcessiveStatementsPerFunctionConfiguration =
 	| RulePlainConfiguration
 	| RuleWithNoExcessiveStatementsPerFunctionOptions;
+export type NoExpectToHaveBeenCalledOnceConfiguration =
+	| RulePlainConfiguration
+	| RuleWithNoExpectToHaveBeenCalledOnceOptions;
 export type NoExtendNativeConfiguration =
 	| RulePlainConfiguration
 	| RuleWithNoExtendNativeOptions;
@@ -9960,6 +9968,14 @@ export interface RuleWithNoExcessiveSelectorComplexityOptions {
 export interface RuleWithNoExcessiveStatementsPerFunctionOptions {
 	level: RulePlainConfiguration;
 	options?: NoExcessiveStatementsPerFunctionOptions;
+}
+export interface RuleWithNoExpectToHaveBeenCalledOnceOptions {
+	/**
+	 * Controls the applicability of the rule's fix. `none` suppresses the fix, while `safe` and `unsafe` reclassify its applicability. This setting does not change the fix itself.
+	 */
+	fix?: FixKind;
+	level: RulePlainConfiguration;
+	options?: NoExpectToHaveBeenCalledOnceOptions;
 }
 export interface RuleWithNoExtendNativeOptions {
 	level: RulePlainConfiguration;
@@ -13665,6 +13681,7 @@ export interface NoExcessiveStatementsPerFunctionOptions {
 	 */
 	max?: number;
 }
+export type NoExpectToHaveBeenCalledOnceOptions = {};
 /**
  * Options for the `noExtendNative` rule.
  */
@@ -16043,7 +16060,6 @@ export type Category =
 	| "lint/nursery/noDynamicRequire"
 	| "lint/nursery/noEagerArrayMethodsInLoops"
 	| "lint/nursery/noEmptyObjectKeys"
-	| "lint/nursery/noYamlEmptySequenceEntries"
 	| "lint/nursery/noErasingOperation"
 	| "lint/nursery/noExcessiveNestedBlocks"
 	| "lint/nursery/noExcessiveNestedCallbacks"
@@ -16180,10 +16196,10 @@ export type Category =
 	| "lint/nursery/noVueComputedPropertiesInData"
 	| "lint/nursery/noVueDefineModelDefault"
 	| "lint/nursery/noVueDeprecatedConfigKeyCodes"
-	| "lint/nursery/noVueDeprecatedFilter"
 	| "lint/nursery/noVueDeprecatedDeleteSet"
 	| "lint/nursery/noVueDeprecatedDestroyedLifecycle"
 	| "lint/nursery/noVueDeprecatedEventsApi"
+	| "lint/nursery/noVueDeprecatedFilter"
 	| "lint/nursery/noVueDeprecatedFunctionalTemplate"
 	| "lint/nursery/noVueDeprecatedHtmlElementIs"
 	| "lint/nursery/noVueDeprecatedInlineTemplate"
@@ -16239,6 +16255,7 @@ export type Category =
 	| "lint/nursery/noYamlBooleanKeys"
 	| "lint/nursery/noYamlEmptyMapKeys"
 	| "lint/nursery/noYamlEmptyMapValues"
+	| "lint/nursery/noYamlEmptySequenceEntries"
 	| "lint/nursery/noZeroFractions"
 	| "lint/nursery/noZeroLengthUnit"
 	| "lint/nursery/useAccessorPairs"
@@ -16249,6 +16266,7 @@ export type Category =
 	| "lint/nursery/useBigintLiterals"
 	| "lint/nursery/useBiomeSuppressionComment"
 	| "lint/nursery/useBlockStatementOverIife"
+	| "lint/nursery/noExpectToHaveBeenCalledOnce"
 	| "lint/nursery/useCalledWith"
 	| "lint/nursery/useCapitalizedConstructors"
 	| "lint/nursery/useCatchErrorName"
