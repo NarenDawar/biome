@@ -3013,6 +3013,11 @@ export interface Nursery {
 	 */
 	noBunModules?: NoBunModulesConfiguration;
 	/**
+	 * Disallow converting a canvas to an image only to draw it onto another canvas.
+	 * See https://biomejs.dev/linter/rules/no-canvas-to-image
+	 */
+	noCanvasToImage?: NoCanvasToImageConfiguration;
+	/**
 	 * Disallow chaining comparisons, as in a \< b \< c.
 	 * See https://biomejs.dev/linter/rules/no-chained-comparison
 	 */
@@ -6782,6 +6787,9 @@ export type NoBufferConstructorConfiguration =
 export type NoBunModulesConfiguration =
 	| RulePlainConfiguration
 	| RuleWithNoBunModulesOptions;
+export type NoCanvasToImageConfiguration =
+	| RulePlainConfiguration
+	| RuleWithNoCanvasToImageOptions;
 export type NoChainedComparisonConfiguration =
 	| RulePlainConfiguration
 	| RuleWithNoChainedComparisonOptions;
@@ -9872,6 +9880,10 @@ export interface RuleWithNoBufferConstructorOptions {
 export interface RuleWithNoBunModulesOptions {
 	level: RulePlainConfiguration;
 	options?: NoBunModulesOptions;
+}
+export interface RuleWithNoCanvasToImageOptions {
+	level: RulePlainConfiguration;
+	options?: NoCanvasToImageOptions;
 }
 export interface RuleWithNoChainedComparisonOptions {
 	level: RulePlainConfiguration;
@@ -13527,6 +13539,7 @@ export interface NoBaseToStringOptions {
 export type NoBooleanSortComparatorOptions = {};
 export type NoBufferConstructorOptions = {};
 export type NoBunModulesOptions = {};
+export type NoCanvasToImageOptions = {};
 export type NoChainedComparisonOptions = {};
 export type NoConfusingArraySpliceOptions = {};
 export type NoConsoleSpacesOptions = {};
@@ -16022,6 +16035,7 @@ export type Category =
 	| "lint/nursery/noBooleanSortComparator"
 	| "lint/nursery/noBufferConstructor"
 	| "lint/nursery/noBunModules"
+	| "lint/nursery/noCanvasToImage"
 	| "lint/nursery/noChainedComparison"
 	| "lint/nursery/noColorInvalidHex"
 	| "lint/nursery/noComponentHookFactories"
@@ -16043,7 +16057,6 @@ export type Category =
 	| "lint/nursery/noDynamicRequire"
 	| "lint/nursery/noEagerArrayMethodsInLoops"
 	| "lint/nursery/noEmptyObjectKeys"
-	| "lint/nursery/noYamlEmptySequenceEntries"
 	| "lint/nursery/noErasingOperation"
 	| "lint/nursery/noExcessiveNestedBlocks"
 	| "lint/nursery/noExcessiveNestedCallbacks"
@@ -16180,10 +16193,10 @@ export type Category =
 	| "lint/nursery/noVueComputedPropertiesInData"
 	| "lint/nursery/noVueDefineModelDefault"
 	| "lint/nursery/noVueDeprecatedConfigKeyCodes"
-	| "lint/nursery/noVueDeprecatedFilter"
 	| "lint/nursery/noVueDeprecatedDeleteSet"
 	| "lint/nursery/noVueDeprecatedDestroyedLifecycle"
 	| "lint/nursery/noVueDeprecatedEventsApi"
+	| "lint/nursery/noVueDeprecatedFilter"
 	| "lint/nursery/noVueDeprecatedFunctionalTemplate"
 	| "lint/nursery/noVueDeprecatedHtmlElementIs"
 	| "lint/nursery/noVueDeprecatedInlineTemplate"
@@ -16239,6 +16252,7 @@ export type Category =
 	| "lint/nursery/noYamlBooleanKeys"
 	| "lint/nursery/noYamlEmptyMapKeys"
 	| "lint/nursery/noYamlEmptyMapValues"
+	| "lint/nursery/noYamlEmptySequenceEntries"
 	| "lint/nursery/noZeroFractions"
 	| "lint/nursery/noZeroLengthUnit"
 	| "lint/nursery/useAccessorPairs"
