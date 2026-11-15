@@ -7774,6 +7774,16 @@
 			"type": "object",
 			"additionalProperties": false
 		},
+		"NoUnsafeSqliteInterpolationConfiguration": {
+			"oneOf": [
+				{ "$ref": "#/$defs/RulePlainConfiguration" },
+				{ "$ref": "#/$defs/RuleWithNoUnsafeSqliteInterpolationOptions" }
+			]
+		},
+		"NoUnsafeSqliteInterpolationOptions": {
+			"type": "object",
+			"additionalProperties": false
+		},
 		"NoUnsafeTypeAssertionConfiguration": {
 			"oneOf": [
 				{ "$ref": "#/$defs/RulePlainConfiguration" },
@@ -10133,6 +10143,13 @@
 					"description": "Disallow returning a value typed as any from a function.\nSee https://biomejs.dev/linter/rules/no-unsafe-return",
 					"anyOf": [
 						{ "$ref": "#/$defs/NoUnsafeReturnConfiguration" },
+						{ "type": "null" }
+					]
+				},
+				"noUnsafeSqliteInterpolation": {
+					"description": "Disallow inserting values into SQL strings passed to the exec() and prepare() methods of node:sqlite databases.\nSee https://biomejs.dev/linter/rules/no-unsafe-sqlite-interpolation",
+					"anyOf": [
+						{ "$ref": "#/$defs/NoUnsafeSqliteInterpolationConfiguration" },
 						{ "type": "null" }
 					]
 				},
@@ -16357,6 +16374,15 @@
 			"properties": {
 				"level": { "$ref": "#/$defs/RulePlainConfiguration" },
 				"options": { "$ref": "#/$defs/NoUnsafeReturnOptions" }
+			},
+			"additionalProperties": false,
+			"required": ["level"]
+		},
+		"RuleWithNoUnsafeSqliteInterpolationOptions": {
+			"type": "object",
+			"properties": {
+				"level": { "$ref": "#/$defs/RulePlainConfiguration" },
+				"options": { "$ref": "#/$defs/NoUnsafeSqliteInterpolationOptions" }
 			},
 			"additionalProperties": false,
 			"required": ["level"]

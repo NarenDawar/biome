@@ -3548,6 +3548,11 @@ export interface Nursery {
 	 */
 	noUnsafeReturn?: NoUnsafeReturnConfiguration;
 	/**
+	 * Disallow inserting values into SQL strings passed to the exec() and prepare() methods of node:sqlite databases.
+	 * See https://biomejs.dev/linter/rules/no-unsafe-sqlite-interpolation
+	 */
+	noUnsafeSqliteInterpolation?: NoUnsafeSqliteInterpolationConfiguration;
+	/**
 	 * Disallow TypeScript type assertions other than const assertions.
 	 * See https://biomejs.dev/linter/rules/no-unsafe-type-assertion
 	 */
@@ -7103,6 +7108,9 @@ export type NoUnsafePlusOperandsConfiguration =
 export type NoUnsafeReturnConfiguration =
 	| RulePlainConfiguration
 	| RuleWithNoUnsafeReturnOptions;
+export type NoUnsafeSqliteInterpolationConfiguration =
+	| RulePlainConfiguration
+	| RuleWithNoUnsafeSqliteInterpolationOptions;
 export type NoUnsafeTypeAssertionConfiguration =
 	| RulePlainConfiguration
 	| RuleWithNoUnsafeTypeAssertionOptions;
@@ -10424,6 +10432,10 @@ export interface RuleWithNoUnsafePlusOperandsOptions {
 export interface RuleWithNoUnsafeReturnOptions {
 	level: RulePlainConfiguration;
 	options?: NoUnsafeReturnOptions;
+}
+export interface RuleWithNoUnsafeSqliteInterpolationOptions {
+	level: RulePlainConfiguration;
+	options?: NoUnsafeSqliteInterpolationOptions;
 }
 export interface RuleWithNoUnsafeTypeAssertionOptions {
 	level: RulePlainConfiguration;
@@ -13887,6 +13899,7 @@ export type NoUnresolvedDefaultImportOptions = {};
 export type NoUnsafeIframeSandboxOptions = {};
 export type NoUnsafePlusOperandsOptions = {};
 export type NoUnsafeReturnOptions = {};
+export type NoUnsafeSqliteInterpolationOptions = {};
 export type NoUnsafeTypeAssertionOptions = {};
 export type NoUnsafeUnaryMinusOptions = {};
 export type NoUnusedClassesOptions = {};
@@ -16043,7 +16056,6 @@ export type Category =
 	| "lint/nursery/noDynamicRequire"
 	| "lint/nursery/noEagerArrayMethodsInLoops"
 	| "lint/nursery/noEmptyObjectKeys"
-	| "lint/nursery/noYamlEmptySequenceEntries"
 	| "lint/nursery/noErasingOperation"
 	| "lint/nursery/noExcessiveNestedBlocks"
 	| "lint/nursery/noExcessiveNestedCallbacks"
@@ -16156,6 +16168,7 @@ export type Category =
 	| "lint/nursery/noUnsafeIframeSandbox"
 	| "lint/nursery/noUnsafePlusOperands"
 	| "lint/nursery/noUnsafeReturn"
+	| "lint/nursery/noUnsafeSqliteInterpolation"
 	| "lint/nursery/noUnsafeTypeAssertion"
 	| "lint/nursery/noUnsafeUnaryMinus"
 	| "lint/nursery/noUnusedClasses"
@@ -16180,10 +16193,10 @@ export type Category =
 	| "lint/nursery/noVueComputedPropertiesInData"
 	| "lint/nursery/noVueDefineModelDefault"
 	| "lint/nursery/noVueDeprecatedConfigKeyCodes"
-	| "lint/nursery/noVueDeprecatedFilter"
 	| "lint/nursery/noVueDeprecatedDeleteSet"
 	| "lint/nursery/noVueDeprecatedDestroyedLifecycle"
 	| "lint/nursery/noVueDeprecatedEventsApi"
+	| "lint/nursery/noVueDeprecatedFilter"
 	| "lint/nursery/noVueDeprecatedFunctionalTemplate"
 	| "lint/nursery/noVueDeprecatedHtmlElementIs"
 	| "lint/nursery/noVueDeprecatedInlineTemplate"
@@ -16239,6 +16252,7 @@ export type Category =
 	| "lint/nursery/noYamlBooleanKeys"
 	| "lint/nursery/noYamlEmptyMapKeys"
 	| "lint/nursery/noYamlEmptyMapValues"
+	| "lint/nursery/noYamlEmptySequenceEntries"
 	| "lint/nursery/noZeroFractions"
 	| "lint/nursery/noZeroLengthUnit"
 	| "lint/nursery/useAccessorPairs"
