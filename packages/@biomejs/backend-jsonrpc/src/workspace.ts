@@ -4068,6 +4068,11 @@ export interface Nursery {
 	 */
 	useExhaustiveSwitchCases?: UseExhaustiveSwitchCasesConfiguration;
 	/**
+	 * Enforce using an equality matcher instead of comparing values with === or !== inside expect().
+	 * See https://biomejs.dev/linter/rules/use-expect-equality-matcher
+	 */
+	useExpectEqualityMatcher?: UseExpectEqualityMatcherConfiguration;
+	/**
 	 * Enforce using toContain() to check whether an array or string contains a value.
 	 * See https://biomejs.dev/linter/rules/use-expect-to-contain
 	 */
@@ -7415,6 +7420,9 @@ export type UseDisposablesConfiguration =
 export type UseExhaustiveSwitchCasesConfiguration =
 	| RulePlainConfiguration
 	| RuleWithUseExhaustiveSwitchCasesOptions;
+export type UseExpectEqualityMatcherConfiguration =
+	| RulePlainConfiguration
+	| RuleWithUseExpectEqualityMatcherOptions;
 export type UseExpectToContainConfiguration =
 	| RulePlainConfiguration
 	| RuleWithUseExpectToContainOptions;
@@ -10965,6 +10973,14 @@ export interface RuleWithUseExhaustiveSwitchCasesOptions {
 	level: RulePlainConfiguration;
 	options?: UseExhaustiveSwitchCasesOptions;
 }
+export interface RuleWithUseExpectEqualityMatcherOptions {
+	/**
+	 * Controls the applicability of the rule's fix. `none` suppresses the fix, while `safe` and `unsafe` reclassify its applicability. This setting does not change the fix itself.
+	 */
+	fix?: FixKind;
+	level: RulePlainConfiguration;
+	options?: UseExpectEqualityMatcherOptions;
+}
 export interface RuleWithUseExpectToContainOptions {
 	/**
 	 * Controls the applicability of the rule's fix. `none` suppresses the fix, while `safe` and `unsafe` reclassify its applicability. This setting does not change the fix itself.
@@ -14168,6 +14184,7 @@ export interface UseExhaustiveSwitchCasesOptions {
 	 */
 	requireExplicitCase?: boolean;
 }
+export type UseExpectEqualityMatcherOptions = {};
 export type UseExpectToContainOptions = {};
 export type UseExpectToHaveBeenCalledOptions = {};
 export type UseExpectToHaveBeenCalledTimesOptions = {};
@@ -16043,7 +16060,6 @@ export type Category =
 	| "lint/nursery/noDynamicRequire"
 	| "lint/nursery/noEagerArrayMethodsInLoops"
 	| "lint/nursery/noEmptyObjectKeys"
-	| "lint/nursery/noYamlEmptySequenceEntries"
 	| "lint/nursery/noErasingOperation"
 	| "lint/nursery/noExcessiveNestedBlocks"
 	| "lint/nursery/noExcessiveNestedCallbacks"
@@ -16180,10 +16196,10 @@ export type Category =
 	| "lint/nursery/noVueComputedPropertiesInData"
 	| "lint/nursery/noVueDefineModelDefault"
 	| "lint/nursery/noVueDeprecatedConfigKeyCodes"
-	| "lint/nursery/noVueDeprecatedFilter"
 	| "lint/nursery/noVueDeprecatedDeleteSet"
 	| "lint/nursery/noVueDeprecatedDestroyedLifecycle"
 	| "lint/nursery/noVueDeprecatedEventsApi"
+	| "lint/nursery/noVueDeprecatedFilter"
 	| "lint/nursery/noVueDeprecatedFunctionalTemplate"
 	| "lint/nursery/noVueDeprecatedHtmlElementIs"
 	| "lint/nursery/noVueDeprecatedInlineTemplate"
@@ -16239,6 +16255,7 @@ export type Category =
 	| "lint/nursery/noYamlBooleanKeys"
 	| "lint/nursery/noYamlEmptyMapKeys"
 	| "lint/nursery/noYamlEmptyMapValues"
+	| "lint/nursery/noYamlEmptySequenceEntries"
 	| "lint/nursery/noZeroFractions"
 	| "lint/nursery/noZeroLengthUnit"
 	| "lint/nursery/useAccessorPairs"
@@ -16266,6 +16283,7 @@ export type Category =
 	| "lint/nursery/useControlLabel"
 	| "lint/nursery/useDisposables"
 	| "lint/nursery/useExhaustiveSwitchCases"
+	| "lint/nursery/useExpectEqualityMatcher"
 	| "lint/nursery/useExpectToContain"
 	| "lint/nursery/useExpectToHaveBeenCalled"
 	| "lint/nursery/useExpectToHaveBeenCalledTimes"
