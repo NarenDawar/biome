@@ -4328,6 +4328,11 @@ export interface Nursery {
 	 */
 	useTanstackQueryInfiniteQueryPropertyOrder?: UseTanstackQueryInfiniteQueryPropertyOrderConfiguration;
 	/**
+	 * Enforce that onMutate comes before onError and onSettled in the options of TanStack Query mutations.
+	 * See https://biomejs.dev/linter/rules/use-tanstack-query-mutation-property-order
+	 */
+	useTanstackQueryMutationPropertyOrder?: UseTanstackQueryMutationPropertyOrderConfiguration;
+	/**
 	 * Require the TanStack Query QueryClient to be created once, not on every render.
 	 * See https://biomejs.dev/linter/rules/use-tanstack-query-stable-query-client
 	 */
@@ -7571,6 +7576,9 @@ export type UseTailwindVariablesShorthandConfiguration =
 export type UseTanstackQueryInfiniteQueryPropertyOrderConfiguration =
 	| RulePlainConfiguration
 	| RuleWithUseTanstackQueryInfiniteQueryPropertyOrderOptions;
+export type UseTanstackQueryMutationPropertyOrderConfiguration =
+	| RulePlainConfiguration
+	| RuleWithUseTanstackQueryMutationPropertyOrderOptions;
 export type UseTanstackQueryStableQueryClientConfiguration =
 	| RulePlainConfiguration
 	| RuleWithUseTanstackQueryStableQueryClientOptions;
@@ -11261,6 +11269,14 @@ export interface RuleWithUseTanstackQueryInfiniteQueryPropertyOrderOptions {
 	level: RulePlainConfiguration;
 	options?: UseTanstackQueryInfiniteQueryPropertyOrderOptions;
 }
+export interface RuleWithUseTanstackQueryMutationPropertyOrderOptions {
+	/**
+	 * Controls the applicability of the rule's fix. `none` suppresses the fix, while `safe` and `unsafe` reclassify its applicability. This setting does not change the fix itself.
+	 */
+	fix?: FixKind;
+	level: RulePlainConfiguration;
+	options?: UseTanstackQueryMutationPropertyOrderOptions;
+}
 export interface RuleWithUseTanstackQueryStableQueryClientOptions {
 	/**
 	 * Controls the applicability of the rule's fix. `none` suppresses the fix, while `safe` and `unsafe` reclassify its applicability. This setting does not change the fix itself.
@@ -14335,6 +14351,7 @@ export type UseTailwindSortedClassesOptions = {};
 export type UseTailwindStaticClassStringsOptions = {};
 export type UseTailwindVariablesShorthandOptions = {};
 export type UseTanstackQueryInfiniteQueryPropertyOrderOptions = {};
+export type UseTanstackQueryMutationPropertyOrderOptions = {};
 export type UseTanstackQueryStableQueryClientOptions = {};
 export type UseTopLevelHeadingOptions = {};
 export type UseTopLevelRequireOptions = {};
@@ -16043,7 +16060,6 @@ export type Category =
 	| "lint/nursery/noDynamicRequire"
 	| "lint/nursery/noEagerArrayMethodsInLoops"
 	| "lint/nursery/noEmptyObjectKeys"
-	| "lint/nursery/noYamlEmptySequenceEntries"
 	| "lint/nursery/noErasingOperation"
 	| "lint/nursery/noExcessiveNestedBlocks"
 	| "lint/nursery/noExcessiveNestedCallbacks"
@@ -16180,10 +16196,10 @@ export type Category =
 	| "lint/nursery/noVueComputedPropertiesInData"
 	| "lint/nursery/noVueDefineModelDefault"
 	| "lint/nursery/noVueDeprecatedConfigKeyCodes"
-	| "lint/nursery/noVueDeprecatedFilter"
 	| "lint/nursery/noVueDeprecatedDeleteSet"
 	| "lint/nursery/noVueDeprecatedDestroyedLifecycle"
 	| "lint/nursery/noVueDeprecatedEventsApi"
+	| "lint/nursery/noVueDeprecatedFilter"
 	| "lint/nursery/noVueDeprecatedFunctionalTemplate"
 	| "lint/nursery/noVueDeprecatedHtmlElementIs"
 	| "lint/nursery/noVueDeprecatedInlineTemplate"
@@ -16239,6 +16255,7 @@ export type Category =
 	| "lint/nursery/noYamlBooleanKeys"
 	| "lint/nursery/noYamlEmptyMapKeys"
 	| "lint/nursery/noYamlEmptyMapValues"
+	| "lint/nursery/noYamlEmptySequenceEntries"
 	| "lint/nursery/noZeroFractions"
 	| "lint/nursery/noZeroLengthUnit"
 	| "lint/nursery/useAccessorPairs"
@@ -16327,6 +16344,7 @@ export type Category =
 	| "lint/nursery/useTailwindStaticClassStrings"
 	| "lint/nursery/useTailwindVariablesShorthand"
 	| "lint/nursery/useTanstackQueryInfiniteQueryPropertyOrder"
+	| "lint/nursery/useTanstackQueryMutationPropertyOrder"
 	| "lint/nursery/useTanstackQueryStableQueryClient"
 	| "lint/nursery/useTopLevelHeading"
 	| "lint/nursery/useTopLevelRequire"
