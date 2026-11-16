@@ -129,6 +129,7 @@ pub fn config_side_rule_options_types() -> Vec<(&'static str, &'static str, Type
         "noBiomeFirstException",
         TypeId::of::<biome_rule_options::no_biome_first_exception::NoBiomeFirstExceptionOptions>(),
     ));
+    result.push(("nursery", "noBiomeRepeatedKindSetConstruction", TypeId::of::<biome_rule_options::no_biome_repeated_kind_set_construction::NoBiomeRepeatedKindSetConstructionOptions>()));
     result.push((
         "suspicious",
         "noBitwiseOperators",
@@ -2531,6 +2532,11 @@ pub fn config_side_rule_options_types() -> Vec<(&'static str, &'static str, Type
         "suspicious",
         "useBiomeIgnoreFolder",
         TypeId::of::<biome_rule_options::use_biome_ignore_folder::UseBiomeIgnoreFolderOptions>(),
+    ));
+    result.push((
+        "nursery",
+        "useBiomeKindSets",
+        TypeId::of::<biome_rule_options::use_biome_kind_sets::UseBiomeKindSetsOptions>(),
     ));
     result.push((
         "nursery",

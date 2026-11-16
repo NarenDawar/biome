@@ -1256,6 +1256,7 @@ export interface JsonParserConfiguration {
 }
 export interface RuleDomains {
 	astro?: RuleDomainValue;
+	biomePlugin?: RuleDomainValue;
 	drizzle?: RuleDomainValue;
 	next?: RuleDomainValue;
 	playwright?: RuleDomainValue;
@@ -2998,6 +2999,11 @@ export interface Nursery {
 	 */
 	noBaseToString?: NoBaseToStringConfiguration;
 	/**
+	 * Disallow creating kind sets inside functions in Biome JS plugins.
+	 * See https://biomejs.dev/linter/rules/no-biome-repeated-kind-set-construction
+	 */
+	noBiomeRepeatedKindSetConstruction?: NoBiomeRepeatedKindSetConstructionConfiguration;
+	/**
 	 * Disallow sort comparators that return a boolean.
 	 * See https://biomejs.dev/linter/rules/no-boolean-sort-comparator
 	 */
@@ -4012,6 +4018,11 @@ export interface Nursery {
 	 * See https://biomejs.dev/linter/rules/use-bigint-literals
 	 */
 	useBigintLiterals?: UseBigintLiteralsConfiguration;
+	/**
+	 * Require kind sets instead of comparing kind names one by one in Biome JS plugins.
+	 * See https://biomejs.dev/linter/rules/use-biome-kind-sets
+	 */
+	useBiomeKindSets?: UseBiomeKindSetsConfiguration;
 	/**
 	 * Prefer block statements over functions that are called immediately only to create a scope.
 	 * See https://biomejs.dev/linter/rules/use-block-statement-over-iife
@@ -6818,6 +6829,9 @@ export type NoAwaitInPromiseMethodsConfiguration =
 export type NoBaseToStringConfiguration =
 	| RulePlainConfiguration
 	| RuleWithNoBaseToStringOptions;
+export type NoBiomeRepeatedKindSetConstructionConfiguration =
+	| RulePlainConfiguration
+	| RuleWithNoBiomeRepeatedKindSetConstructionOptions;
 export type NoBooleanSortComparatorConfiguration =
 	| RulePlainConfiguration
 	| RuleWithNoBooleanSortComparatorOptions;
@@ -7427,6 +7441,9 @@ export type UseBetterDomTraversingConfiguration =
 export type UseBigintLiteralsConfiguration =
 	| RulePlainConfiguration
 	| RuleWithUseBigintLiteralsOptions;
+export type UseBiomeKindSetsConfiguration =
+	| RulePlainConfiguration
+	| RuleWithUseBiomeKindSetsOptions;
 export type UseBlockStatementOverIifeConfiguration =
 	| RulePlainConfiguration
 	| RuleWithUseBlockStatementOverIifeOptions;
@@ -9929,6 +9946,10 @@ export interface RuleWithNoBaseToStringOptions {
 	level: RulePlainConfiguration;
 	options?: NoBaseToStringOptions;
 }
+export interface RuleWithNoBiomeRepeatedKindSetConstructionOptions {
+	level: RulePlainConfiguration;
+	options?: NoBiomeRepeatedKindSetConstructionOptions;
+}
 export interface RuleWithNoBooleanSortComparatorOptions {
 	/**
 	 * Controls the applicability of the rule's fix. `none` suppresses the fix, while `safe` and `unsafe` reclassify its applicability. This setting does not change the fix itself.
@@ -10968,6 +10989,10 @@ export interface RuleWithUseBigintLiteralsOptions {
 	fix?: FixKind;
 	level: RulePlainConfiguration;
 	options?: UseBigintLiteralsOptions;
+}
+export interface RuleWithUseBiomeKindSetsOptions {
+	level: RulePlainConfiguration;
+	options?: UseBiomeKindSetsOptions;
 }
 export interface RuleWithUseBlockStatementOverIifeOptions {
 	/**
@@ -13656,6 +13681,7 @@ export type NoAwaitInPromiseMethodsOptions = {};
 export interface NoBaseToStringOptions {
 	ignoredTypeNames?: string[];
 }
+export type NoBiomeRepeatedKindSetConstructionOptions = {};
 export type NoBooleanSortComparatorOptions = {};
 export type NoBufferConstructorOptions = {};
 export type NoBunModulesOptions = {};
@@ -14196,6 +14222,7 @@ export type UseAtomicUpdatesOptions = {};
 export type UseAwaitThenableOptions = {};
 export type UseBetterDomTraversingOptions = {};
 export type UseBigintLiteralsOptions = {};
+export type UseBiomeKindSetsOptions = {};
 export type UseBlockStatementOverIifeOptions = {};
 export type UseCalledWithOptions = {};
 export type UseCapitalizedConstructorsOptions = {};
@@ -16167,6 +16194,7 @@ export type Category =
 	| "lint/nursery/noAsyncPromiseFinally"
 	| "lint/nursery/noAwaitInPromiseMethods"
 	| "lint/nursery/noBaseToString"
+	| "lint/nursery/noBiomeRepeatedKindSetConstruction"
 	| "lint/nursery/noBooleanSortComparator"
 	| "lint/nursery/noBufferConstructor"
 	| "lint/nursery/noBunModules"
@@ -16191,8 +16219,6 @@ export type Category =
 	| "lint/nursery/noDynamicRequire"
 	| "lint/nursery/noEagerArrayMethodsInLoops"
 	| "lint/nursery/noEmptyObjectKeys"
-	| "lint/nursery/noTestHooks"
-	| "lint/nursery/noYamlEmptySequenceEntries"
 	| "lint/nursery/noErasingOperation"
 	| "lint/nursery/noExcessiveNestedBlocks"
 	| "lint/nursery/noExcessiveNestedCallbacks"
@@ -16295,6 +16321,7 @@ export type Category =
 	| "lint/nursery/noTanstackQueryRestDestructuring"
 	| "lint/nursery/noTanstackQueryVoidQueryFn"
 	| "lint/nursery/noTestGlobals"
+	| "lint/nursery/noTestHooks"
 	| "lint/nursery/noThisOutsideOfClass"
 	| "lint/nursery/noTripleSlashReference"
 	| "lint/nursery/noUndeclaredClasses"
@@ -16334,10 +16361,10 @@ export type Category =
 	| "lint/nursery/noVueComputedPropertiesInData"
 	| "lint/nursery/noVueDefineModelDefault"
 	| "lint/nursery/noVueDeprecatedConfigKeyCodes"
-	| "lint/nursery/noVueDeprecatedFilter"
 	| "lint/nursery/noVueDeprecatedDeleteSet"
 	| "lint/nursery/noVueDeprecatedDestroyedLifecycle"
 	| "lint/nursery/noVueDeprecatedEventsApi"
+	| "lint/nursery/noVueDeprecatedFilter"
 	| "lint/nursery/noVueDeprecatedFunctionalTemplate"
 	| "lint/nursery/noVueDeprecatedHtmlElementIs"
 	| "lint/nursery/noVueDeprecatedInlineTemplate"
@@ -16393,6 +16420,7 @@ export type Category =
 	| "lint/nursery/noYamlBooleanKeys"
 	| "lint/nursery/noYamlEmptyMapKeys"
 	| "lint/nursery/noYamlEmptyMapValues"
+	| "lint/nursery/noYamlEmptySequenceEntries"
 	| "lint/nursery/noZeroFractions"
 	| "lint/nursery/noZeroLengthUnit"
 	| "lint/nursery/useAccessorPairs"
@@ -16401,6 +16429,7 @@ export type Category =
 	| "lint/nursery/useAwaitThenable"
 	| "lint/nursery/useBetterDomTraversing"
 	| "lint/nursery/useBigintLiterals"
+	| "lint/nursery/useBiomeKindSets"
 	| "lint/nursery/useBiomeSuppressionComment"
 	| "lint/nursery/useBlockStatementOverIife"
 	| "lint/nursery/useCalledWith"

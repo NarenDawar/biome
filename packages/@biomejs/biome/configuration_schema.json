@@ -3728,6 +3728,16 @@
 			"type": "object",
 			"additionalProperties": false
 		},
+		"NoBiomeRepeatedKindSetConstructionConfiguration": {
+			"oneOf": [
+				{ "$ref": "#/$defs/RulePlainConfiguration" },
+				{ "$ref": "#/$defs/RuleWithNoBiomeRepeatedKindSetConstructionOptions" }
+			]
+		},
+		"NoBiomeRepeatedKindSetConstructionOptions": {
+			"type": "object",
+			"additionalProperties": false
+		},
 		"NoBitwiseOperatorsConfiguration": {
 			"oneOf": [
 				{ "$ref": "#/$defs/RulePlainConfiguration" },
@@ -9414,6 +9424,15 @@
 						{ "type": "null" }
 					]
 				},
+				"noBiomeRepeatedKindSetConstruction": {
+					"description": "Disallow creating kind sets inside functions in Biome JS plugins.\nSee https://biomejs.dev/linter/rules/no-biome-repeated-kind-set-construction",
+					"anyOf": [
+						{
+							"$ref": "#/$defs/NoBiomeRepeatedKindSetConstructionConfiguration"
+						},
+						{ "type": "null" }
+					]
+				},
 				"noBooleanSortComparator": {
 					"description": "Disallow sort comparators that return a boolean.\nSee https://biomejs.dev/linter/rules/no-boolean-sort-comparator",
 					"anyOf": [
@@ -10844,6 +10863,13 @@
 					"description": "Enforce the use of bigint literals over the BigInt() constructor.\nSee https://biomejs.dev/linter/rules/use-bigint-literals",
 					"anyOf": [
 						{ "$ref": "#/$defs/UseBigintLiteralsConfiguration" },
+						{ "type": "null" }
+					]
+				},
+				"useBiomeKindSets": {
+					"description": "Require kind sets instead of comparing kind names one by one in Biome JS plugins.\nSee https://biomejs.dev/linter/rules/use-biome-kind-sets",
+					"anyOf": [
+						{ "$ref": "#/$defs/UseBiomeKindSetsConfiguration" },
 						{ "type": "null" }
 					]
 				},
@@ -12540,6 +12566,7 @@
 			"type": "object",
 			"properties": {
 				"astro": { "$ref": "#/$defs/RuleDomainValue" },
+				"biomePlugin": { "$ref": "#/$defs/RuleDomainValue" },
 				"drizzle": { "$ref": "#/$defs/RuleDomainValue" },
 				"next": { "$ref": "#/$defs/RuleDomainValue" },
 				"playwright": { "$ref": "#/$defs/RuleDomainValue" },
@@ -12881,6 +12908,17 @@
 				},
 				"level": { "$ref": "#/$defs/RulePlainConfiguration" },
 				"options": { "$ref": "#/$defs/NoBiomeFirstExceptionOptions" }
+			},
+			"additionalProperties": false,
+			"required": ["level"]
+		},
+		"RuleWithNoBiomeRepeatedKindSetConstructionOptions": {
+			"type": "object",
+			"properties": {
+				"level": { "$ref": "#/$defs/RulePlainConfiguration" },
+				"options": {
+					"$ref": "#/$defs/NoBiomeRepeatedKindSetConstructionOptions"
+				}
 			},
 			"additionalProperties": false,
 			"required": ["level"]
@@ -18165,6 +18203,15 @@
 				},
 				"level": { "$ref": "#/$defs/RulePlainConfiguration" },
 				"options": { "$ref": "#/$defs/UseBiomeIgnoreFolderOptions" }
+			},
+			"additionalProperties": false,
+			"required": ["level"]
+		},
+		"RuleWithUseBiomeKindSetsOptions": {
+			"type": "object",
+			"properties": {
+				"level": { "$ref": "#/$defs/RulePlainConfiguration" },
+				"options": { "$ref": "#/$defs/UseBiomeKindSetsOptions" }
 			},
 			"additionalProperties": false,
 			"required": ["level"]
@@ -23882,6 +23929,16 @@
 			]
 		},
 		"UseBiomeIgnoreFolderOptions": {
+			"type": "object",
+			"additionalProperties": false
+		},
+		"UseBiomeKindSetsConfiguration": {
+			"oneOf": [
+				{ "$ref": "#/$defs/RulePlainConfiguration" },
+				{ "$ref": "#/$defs/RuleWithUseBiomeKindSetsOptions" }
+			]
+		},
+		"UseBiomeKindSetsOptions": {
 			"type": "object",
 			"additionalProperties": false
 		},

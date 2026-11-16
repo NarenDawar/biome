@@ -119,6 +119,7 @@ pub enum RuleName {
     NoBaseToString,
     NoBeforeInteractiveScriptOutsideDocument,
     NoBiomeFirstException,
+    NoBiomeRepeatedKindSetConstruction,
     NoBitwiseOperators,
     NoBlankTarget,
     NoBooleanSortComparator,
@@ -633,6 +634,7 @@ pub enum RuleName {
     UseBetterDomTraversing,
     UseBigintLiterals,
     UseBiomeIgnoreFolder,
+    UseBiomeKindSets,
     UseBlockStatementOverIife,
     UseBlockStatements,
     UseButtonType,
@@ -950,6 +952,7 @@ impl RuleName {
                 "noBeforeInteractiveScriptOutsideDocument"
             }
             Self::NoBiomeFirstException => "noBiomeFirstException",
+            Self::NoBiomeRepeatedKindSetConstruction => "noBiomeRepeatedKindSetConstruction",
             Self::NoBitwiseOperators => "noBitwiseOperators",
             Self::NoBlankTarget => "noBlankTarget",
             Self::NoBooleanSortComparator => "noBooleanSortComparator",
@@ -1470,6 +1473,7 @@ impl RuleName {
             Self::UseBetterDomTraversing => "useBetterDomTraversing",
             Self::UseBigintLiterals => "useBigintLiterals",
             Self::UseBiomeIgnoreFolder => "useBiomeIgnoreFolder",
+            Self::UseBiomeKindSets => "useBiomeKindSets",
             Self::UseBlockStatementOverIife => "useBlockStatementOverIife",
             Self::UseBlockStatements => "useBlockStatements",
             Self::UseButtonType => "useButtonType",
@@ -1791,6 +1795,7 @@ impl RuleName {
             Self::NoBaseToString => RuleGroup::Nursery,
             Self::NoBeforeInteractiveScriptOutsideDocument => RuleGroup::Correctness,
             Self::NoBiomeFirstException => RuleGroup::Suspicious,
+            Self::NoBiomeRepeatedKindSetConstruction => RuleGroup::Nursery,
             Self::NoBitwiseOperators => RuleGroup::Suspicious,
             Self::NoBlankTarget => RuleGroup::Security,
             Self::NoBooleanSortComparator => RuleGroup::Nursery,
@@ -2305,6 +2310,7 @@ impl RuleName {
             Self::UseBetterDomTraversing => RuleGroup::Nursery,
             Self::UseBigintLiterals => RuleGroup::Nursery,
             Self::UseBiomeIgnoreFolder => RuleGroup::Suspicious,
+            Self::UseBiomeKindSets => RuleGroup::Nursery,
             Self::UseBlockStatementOverIife => RuleGroup::Nursery,
             Self::UseBlockStatements => RuleGroup::Style,
             Self::UseButtonType => RuleGroup::A11y,
@@ -2625,6 +2631,7 @@ impl std::str::FromStr for RuleName {
                 Ok(Self::NoBeforeInteractiveScriptOutsideDocument)
             }
             "noBiomeFirstException" => Ok(Self::NoBiomeFirstException),
+            "noBiomeRepeatedKindSetConstruction" => Ok(Self::NoBiomeRepeatedKindSetConstruction),
             "noBitwiseOperators" => Ok(Self::NoBitwiseOperators),
             "noBlankTarget" => Ok(Self::NoBlankTarget),
             "noBooleanSortComparator" => Ok(Self::NoBooleanSortComparator),
@@ -3149,6 +3156,7 @@ impl std::str::FromStr for RuleName {
             "useBetterDomTraversing" => Ok(Self::UseBetterDomTraversing),
             "useBigintLiterals" => Ok(Self::UseBigintLiterals),
             "useBiomeIgnoreFolder" => Ok(Self::UseBiomeIgnoreFolder),
+            "useBiomeKindSets" => Ok(Self::UseBiomeKindSets),
             "useBlockStatementOverIife" => Ok(Self::UseBlockStatementOverIife),
             "useBlockStatements" => Ok(Self::UseBlockStatements),
             "useButtonType" => Ok(Self::UseButtonType),
