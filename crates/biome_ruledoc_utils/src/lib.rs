@@ -125,6 +125,8 @@ impl AnalyzerServicesBuilder {
                     DocumentFileSource::Js(_) => js_paths.push(biome_path),
                     DocumentFileSource::Css(_) => css_paths.push(biome_path),
                     DocumentFileSource::Html(_) => html_paths.push(biome_path),
+                    // YAML files don't take part in the module graph.
+                    DocumentFileSource::Yaml(_) => {}
                     _ => unimplemented!(
                         "Unhandled file type: {biome_path}. Add a new branch once the module graph understands new module types"
                     ),

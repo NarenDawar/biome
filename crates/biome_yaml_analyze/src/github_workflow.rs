@@ -9,6 +9,8 @@ use biome_rowan::{AstNode, SyntaxKind, TextRange};
 use biome_yaml_syntax::YamlRoot;
 use camino::Utf8Path;
 use indexmap::IndexMap;
+use std::borrow::Borrow;
+use std::hash::{Hash, Hasher};
 
 /// Returns `true` if `path` is a YAML file directly inside a `.github/workflows` directory.
 pub fn is_github_workflow_path(path: &Utf8Path) -> bool {
@@ -33,7 +35,7 @@ pub struct GitHubWorkflow {
     pub defaults: Option<Defaults>,
     pub concurrency: Option<StringOr<Concurrency>>,
     /// The jobs of the workflow, in source order and keyed by job ID.
-    pub jobs: Option<IndexMap<String, Job>>,
+    pub jobs: Option<IndexMap<JobId, Job>>,
 }
 
 impl GitHubWorkflow {
@@ -52,6 +54,47 @@ impl GitHubWorkflow {
         }
 
         deserialize_from_yaml_ast(root, path.file_name().unwrap_or("workflow.yml")).consume()
+    }
+}
+
+/// The ID of a job, which is the key of the job in the `jobs` mapping.
+///
+/// Only the `name` is compared and hashed, so a `JobId` can be looked up with a `&str`. The
+/// `range` is where the key is written in the source.
+#[derive(Clone, Debug)]
+pub struct JobId {
+    pub name: String,
+    pub range: TextRange,
+}
+
+impl PartialEq for JobId {
+    fn eq(&self, other: &Self) -> bool {
+        self.name == other.name
+    }
+}
+
+impl Eq for JobId {}
+
+impl Hash for JobId {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.name.hash(state);
+    }
+}
+
+impl Borrow<str> for JobId {
+    fn borrow(&self) -> &str {
+        &self.name
+    }
+}
+
+impl Deserializable for JobId {
+    fn deserialize<V: DeserializableValue>(
+        ctx: &mut dyn DeserializationContext<State = V::State>,
+        value: &V,
+        name: &str,
+    ) -> Option<Self> {
+        let range = value.range();
+        String::deserialize(ctx, value, name).map(|name| Self { name, range })
     }
 }
 
@@ -572,7 +615,10 @@ jobs:
         assert_eq!(triggers.events["schedule"].crons, ["0 0 * * *"]);
 
         let jobs = workflow.jobs.unwrap();
-        assert_eq!(jobs.keys().collect::<Vec<_>>(), ["build", "call"]);
+        assert_eq!(
+            jobs.keys().map(|id| id.name.as_str()).collect::<Vec<_>>(),
+            ["build", "call"]
+        );
 
         let build = &jobs["build"];
         assert_eq!(build.needs, Some(OneOrMany(vec!["lint".to_string()])));
