@@ -11,6 +11,7 @@ use camino::Utf8Path;
 use indexmap::IndexMap;
 use std::borrow::Borrow;
 use std::hash::{Hash, Hasher};
+use std::ops::Deref;
 
 /// Returns `true` if `path` is a YAML file directly inside a `.github/workflows` directory.
 pub fn is_github_workflow_path(path: &Utf8Path) -> bool {
@@ -98,6 +99,42 @@ impl Deserializable for JobId {
     }
 }
 
+/// A value with the range where it is written in the source.
+///
+/// Only the `value` is compared, so two values that are written at different places are equal.
+#[derive(Clone, Debug)]
+pub struct Spanned<T> {
+    pub value: T,
+    pub range: TextRange,
+}
+
+impl<T> Deref for Spanned<T> {
+    type Target = T;
+
+    fn deref(&self) -> &T {
+        &self.value
+    }
+}
+
+impl<T: PartialEq> PartialEq for Spanned<T> {
+    fn eq(&self, other: &Self) -> bool {
+        self.value == other.value
+    }
+}
+
+impl<T: Eq> Eq for Spanned<T> {}
+
+impl<T: Deserializable> Deserializable for Spanned<T> {
+    fn deserialize<V: DeserializableValue>(
+        ctx: &mut dyn DeserializationContext<State = V::State>,
+        value: &V,
+        name: &str,
+    ) -> Option<Self> {
+        let range = value.range();
+        T::deserialize(ctx, value, name).map(|value| Self { value, range })
+    }
+}
+
 /// A job of a workflow. It either runs `steps`, or calls a reusable workflow with `uses`.
 #[derive(Clone, Debug, Default, Deserializable, Eq, PartialEq)]
 #[deserializable(unknown_fields = "allow")]
@@ -118,7 +155,7 @@ pub struct Job {
     pub timeout_minutes: Option<Scalar>,
     #[deserializable(rename = "continue-on-error")]
     pub continue_on_error: Option<Scalar>,
-    pub steps: Option<Vec<Step>>,
+    pub steps: Option<Vec<Spanned<Step>>>,
     pub uses: Option<String>,
     pub with: Option<IndexMap<String, Scalar>>,
     pub secrets: Option<StringOr<IndexMap<String, Scalar>>>,
